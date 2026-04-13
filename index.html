@@ -369,192 +369,21 @@ select option { background: var(--surface); }
     <div class="page" id="p-gym">
       <div class="ph"><div class="ph-title">Gym</div><div class="ph-sub">entrenamiento · alimentación</div><div class="ph-line" style="background:var(--purple)"></div></div>
 
-      <!-- ASISTENCIA -->
+      <!-- DÍA ACTUAL -->
       <div class="card">
-        <div class="card-h"><span class="card-t">asistencia · 4 semanas</span><span class="chip chip-purple">GYM</span></div>
-        <div class="daygrid" id="dgrid"></div>
-        <button class="ab" style="width:100%;border-radius:var(--r-sm);font-size:13px;font-weight:700;height:40px;" onclick="markGym()">✓ marcar hoy</button>
-      </div>
-
-      <!-- CHECKLIST SEMANAL -->
-      <div class="card">
-        <div class="card-h">
-          <span class="card-t">rutina semanal</span>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span id="semana-label" style="font-size:10px;color:var(--text2);font-family:var(--mono)"></span>
-            <button onclick="resetChecklist()" style="font-size:10px;font-family:var(--mono);color:var(--red);background:none;border:none;cursor:pointer;">↺ reset</button>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <button onclick="cambiarDia(-1)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:var(--r-sm);width:36px;height:36px;font-size:18px;cursor:pointer;">‹</button>
+          <div style="text-align:center;">
+            <div id="gym-dia-nombre" style="font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--accent);letter-spacing:-0.3px;"></div>
+            <div id="gym-dia-fecha" style="font-size:11px;color:var(--text2);font-family:var(--mono);margin-top:2px;"></div>
           </div>
+          <button onclick="cambiarDia(1)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:var(--r-sm);width:36px;height:36px;font-size:18px;cursor:pointer;">›</button>
         </div>
-
-        <!-- LUNES -->
-        <div class="rutina-dia">
-          <div class="dia-header" onclick="toggleDia('lunes')">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:13px;font-weight:700;color:var(--accent)">LUNES</span>
-              <span style="font-size:11px;color:var(--text2)">Fuerza + Core funcional</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span id="prog-lunes" style="font-size:10px;font-family:var(--mono);color:var(--purple)"></span>
-              <span style="color:var(--text3);font-size:14px;">▾</span>
-            </div>
-          </div>
-          <div id="dia-lunes" class="dia-items">
-            <div class="ej-item" onclick="toggleEj('lunes',0)"><div class="ej-chk" id="ej-lunes-0"></div><span>Press banca o mancuernas</span></div>
-            <div class="ej-item" onclick="toggleEj('lunes',1)"><div class="ej-chk" id="ej-lunes-1"></div><span>Remo (barra/máquina)</span></div>
-            <div class="ej-item" onclick="toggleEj('lunes',2)"><div class="ej-chk" id="ej-lunes-2"></div><span>Jalón (o dominadas asistidas)</span></div>
-            <div class="ej-item" onclick="toggleEj('lunes',3)"><div class="ej-chk" id="ej-lunes-3"></div><span>Press hombro + Face pull</span></div>
-            <div class="ej-item" onclick="toggleEj('lunes',4)"><div class="ej-chk" id="ej-lunes-4"></div><span>Tríceps: Extensión en polea – 3×10–12</span></div>
-            <div class="ej-item" onclick="toggleEj('lunes',5)"><div class="ej-chk" id="ej-lunes-5"></div><span>Core: Pallof press dinámico – 3×10/lado</span></div>
-            <div class="ej-item" onclick="toggleEj('lunes',6)"><div class="ej-chk" id="ej-lunes-6"></div><span>Dead bug avanzado – 3×8/lado</span></div>
-            <div class="ej-sep">── Glúteo Medio & Lumbar ──</div>
-            <div class="ej-item" onclick="toggleEj('lunes',7)"><div class="ej-chk" id="ej-lunes-7"></div><span>Good morning con barra – 3×10</span></div>
-            <div class="ej-item" onclick="toggleEj('lunes',8)"><div class="ej-chk" id="ej-lunes-8"></div><span>Abducción de cadera en polea baja – 3×12/lado</span></div>
-          </div>
-        </div>
-
-        <!-- MARTES -->
-        <div class="rutina-dia">
-          <div class="dia-header" onclick="toggleDia('martes')">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:13px;font-weight:700;color:var(--accent)">MARTES</span>
-              <span style="font-size:11px;color:var(--text2)">Movilidad + Postura</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span id="prog-martes" style="font-size:10px;font-family:var(--mono);color:var(--purple)"></span>
-              <span style="color:var(--text3);font-size:14px;">▾</span>
-            </div>
-          </div>
-          <div id="dia-martes" class="dia-items" style="display:none">
-            <div class="ej-item" onclick="toggleEj('martes',0)"><div class="ej-chk" id="ej-martes-0"></div><span>90/90 dinámico</span></div>
-            <div class="ej-item" onclick="toggleEj('martes',1)"><div class="ej-chk" id="ej-martes-1"></div><span>Hip openers</span></div>
-            <div class="ej-item" onclick="toggleEj('martes',2)"><div class="ej-chk" id="ej-martes-2"></div><span>Rotación + extensión torácica</span></div>
-            <div class="ej-item" onclick="toggleEj('martes',3)"><div class="ej-chk" id="ej-martes-3"></div><span>Marcha de core caminando</span></div>
-            <div class="ej-item" onclick="toggleEj('martes',4)"><div class="ej-chk" id="ej-martes-4"></div><span>Farmer carry unilateral</span></div>
-            <div class="ej-sep">── Glúteo Medio & Lumbar ──</div>
-            <div class="ej-item" onclick="toggleEj('martes',5)"><div class="ej-chk" id="ej-martes-5"></div><span>Clamshell con banda elástica – 2×15/lado</span></div>
-            <div class="ej-item" onclick="toggleEj('martes',6)"><div class="ej-chk" id="ej-martes-6"></div><span>Extensión lumbar en suelo (Superman) – 2×12</span></div>
-            <div class="ej-item" onclick="toggleEj('martes',7)"><div class="ej-chk" id="ej-martes-7"></div><span>Side-lying hip abduction – 2×15/lado</span></div>
-          </div>
-        </div>
-
-        <!-- MIÉRCOLES -->
-        <div class="rutina-dia">
-          <div class="dia-header" onclick="toggleDia('miercoles')">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:13px;font-weight:700;color:var(--accent)">MIÉRCOLES</span>
-              <span style="font-size:11px;color:var(--text2)">Espalda + Core rotacional</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span id="prog-miercoles" style="font-size:10px;font-family:var(--mono);color:var(--purple)"></span>
-              <span style="color:var(--text3);font-size:14px;">▾</span>
-            </div>
-          </div>
-          <div id="dia-miercoles" class="dia-items" style="display:none">
-            <div class="ej-item" onclick="toggleEj('miercoles',0)"><div class="ej-chk" id="ej-miercoles-0"></div><span>Remo pesado – 4×6–8</span></div>
-            <div class="ej-item" onclick="toggleEj('miercoles',1)"><div class="ej-chk" id="ej-miercoles-1"></div><span>Pullover o jalón – 3×10–12</span></div>
-            <div class="ej-item" onclick="toggleEj('miercoles',2)"><div class="ej-chk" id="ej-miercoles-2"></div><span>Bíceps: Curl con barra – 3×8–10</span></div>
-            <div class="ej-item" onclick="toggleEj('miercoles',3)"><div class="ej-chk" id="ej-miercoles-3"></div><span>Lanzamiento rotacional con balón (8 kg) – 3×6/lado</span></div>
-            <div class="ej-item" onclick="toggleEj('miercoles',4)"><div class="ej-chk" id="ej-miercoles-4"></div><span>Woodchop alto→bajo con balón – 3×8/lado</span></div>
-            <div class="ej-item" onclick="toggleEj('miercoles',5)"><div class="ej-chk" id="ej-miercoles-5"></div><span>Plancha lateral con abducción – 3×20–30s/lado</span></div>
-            <div class="ej-sep">── Glúteo Medio & Lumbar ──</div>
-            <div class="ej-item" onclick="toggleEj('miercoles',6)"><div class="ej-chk" id="ej-miercoles-6"></div><span>Hiperextensión en banco romano – 3×10–12</span></div>
-            <div class="ej-item" onclick="toggleEj('miercoles',7)"><div class="ej-chk" id="ej-miercoles-7"></div><span>Monster walk lateral con banda – 3×12 pasos/lado</span></div>
-          </div>
-        </div>
-
-        <!-- JUEVES -->
-        <div class="rutina-dia">
-          <div class="dia-header" onclick="toggleDia('jueves')">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:13px;font-weight:700;color:var(--accent)">JUEVES</span>
-              <span style="font-size:11px;color:var(--text2)">Piernas + Glúteos (FUERTE)</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span id="prog-jueves" style="font-size:10px;font-family:var(--mono);color:var(--purple)"></span>
-              <span style="color:var(--text3);font-size:14px;">▾</span>
-            </div>
-          </div>
-          <div id="dia-jueves" class="dia-items" style="display:none">
-            <div class="ej-item" onclick="toggleEj('jueves',0)"><div class="ej-chk" id="ej-jueves-0"></div><span>Sentadilla goblet o frontal – 4×6–8</span></div>
-            <div class="ej-item" onclick="toggleEj('jueves',1)"><div class="ej-chk" id="ej-jueves-1"></div><span>Split squat – 3×8/lado</span></div>
-            <div class="ej-item" onclick="toggleEj('jueves',2)"><div class="ej-chk" id="ej-jueves-2"></div><span>RDL bilateral – 3×8</span></div>
-            <div class="ej-item" onclick="toggleEj('jueves',3)"><div class="ej-chk" id="ej-jueves-3"></div><span>Single-leg RDL – 3×8/lado</span></div>
-            <div class="ej-item" onclick="toggleEj('jueves',4)"><div class="ej-chk" id="ej-jueves-4"></div><span>Hip thrust explosivo – 4×6</span></div>
-            <div class="ej-item" onclick="toggleEj('jueves',5)"><div class="ej-chk" id="ej-jueves-5"></div><span>Core anti-extensión – 3×6–8</span></div>
-            <div class="ej-sep">── Glúteo Medio & Lumbar ──</div>
-            <div class="ej-item" onclick="toggleEj('jueves',6)"><div class="ej-chk" id="ej-jueves-6"></div><span>Hip thrust unilateral con banda – 3×10/lado</span></div>
-            <div class="ej-item" onclick="toggleEj('jueves',7)"><div class="ej-chk" id="ej-jueves-7"></div><span>Peso muerto sumo – 3×8</span></div>
-            <div class="ej-item" onclick="toggleEj('jueves',8)"><div class="ej-chk" id="ej-jueves-8"></div><span>Lateral band walk en posición squat – 3×10 pasos/lado</span></div>
-          </div>
-        </div>
-
-        <!-- VIERNES -->
-        <div class="rutina-dia">
-          <div class="dia-header" onclick="toggleDia('viernes')">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:13px;font-weight:700;color:var(--accent)">VIERNES</span>
-              <span style="font-size:11px;color:var(--text2)">Movilidad + Recuperación</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span id="prog-viernes" style="font-size:10px;font-family:var(--mono);color:var(--purple)"></span>
-              <span style="color:var(--text3);font-size:14px;">▾</span>
-            </div>
-          </div>
-          <div id="dia-viernes" class="dia-items" style="display:none">
-            <div class="ej-item" onclick="toggleEj('viernes',0)"><div class="ej-chk" id="ej-viernes-0"></div><span>Psoas dinámico</span></div>
-            <div class="ej-item" onclick="toggleEj('viernes',1)"><div class="ej-chk" id="ej-viernes-1"></div><span>Piriforme</span></div>
-            <div class="ej-item" onclick="toggleEj('viernes',2)"><div class="ej-chk" id="ej-viernes-2"></div><span>Isquios dinámicos</span></div>
-            <div class="ej-item" onclick="toggleEj('viernes',3)"><div class="ej-chk" id="ej-viernes-3"></div><span>Bird dog lento</span></div>
-            <div class="ej-item" onclick="toggleEj('viernes',4)"><div class="ej-chk" id="ej-viernes-4"></div><span>Respiración diafragmática</span></div>
-            <div class="ej-sep">── Glúteo Medio & Lumbar ──</div>
-            <div class="ej-item" onclick="toggleEj('viernes',5)"><div class="ej-chk" id="ej-viernes-5"></div><span>QL stretch – 2×30s/lado</span></div>
-            <div class="ej-item" onclick="toggleEj('viernes',6)"><div class="ej-chk" id="ej-viernes-6"></div><span>Foam roller lumbar y glúteos – 2 min/zona</span></div>
-            <div class="ej-item" onclick="toggleEj('viernes',7)"><div class="ej-chk" id="ej-viernes-7"></div><span>Child's pose con apertura lateral – 2×30s/lado</span></div>
-          </div>
-        </div>
-
-        <!-- SÁBADO -->
-        <div class="rutina-dia">
-          <div class="dia-header" onclick="toggleDia('sabado')">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:13px;font-weight:700;color:var(--accent)">SÁBADO</span>
-              <span style="font-size:11px;color:var(--text2)">Activación + Potencia</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span id="prog-sabado" style="font-size:10px;font-family:var(--mono);color:var(--purple)"></span>
-              <span style="color:var(--text3);font-size:14px;">▾</span>
-            </div>
-          </div>
-          <div id="dia-sabado" class="dia-items" style="display:none">
-            <div class="ej-item" onclick="toggleEj('sabado',0)"><div class="ej-chk" id="ej-sabado-0"></div><span>Puente de glúteos – 2×10</span></div>
-            <div class="ej-item" onclick="toggleEj('sabado',1)"><div class="ej-chk" id="ej-sabado-1"></div><span>Monster walk – 2×10 pasos</span></div>
-            <div class="ej-item" onclick="toggleEj('sabado',2)"><div class="ej-chk" id="ej-sabado-2"></div><span>Lanzamiento frontal con balón (8 kg) – 2×6</span></div>
-            <div class="ej-item" onclick="toggleEj('sabado',3)"><div class="ej-chk" id="ej-sabado-3"></div><span>Rotación suave con balón – 2×6/lado</span></div>
-            <div class="ej-item" onclick="toggleEj('sabado',4)"><div class="ej-chk" id="ej-sabado-4"></div><span>Skips A</span></div>
-            <div class="ej-item" onclick="toggleEj('sabado',5)"><div class="ej-chk" id="ej-sabado-5"></div><span>Aceleraciones suaves</span></div>
-            <div class="ej-sep">── Glúteo Medio & Lumbar ──</div>
-            <div class="ej-item" onclick="toggleEj('sabado',6)"><div class="ej-chk" id="ej-sabado-6"></div><span>Clamshell con banda – 2×12/lado</span></div>
-            <div class="ej-item" onclick="toggleEj('sabado',7)"><div class="ej-chk" id="ej-sabado-7"></div><span>Puente de glúteo unilateral – 2×8/lado</span></div>
-          </div>
-        </div>
-
-        <!-- DOMINGO -->
-        <div class="rutina-dia">
-          <div class="dia-header" onclick="toggleDia('domingo')">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:13px;font-weight:700;color:var(--accent)">DOMINGO</span>
-              <span style="font-size:11px;color:var(--text2)">Competencia</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span id="prog-domingo" style="font-size:10px;font-family:var(--mono);color:var(--purple)"></span>
-              <span style="color:var(--text3);font-size:14px;">▾</span>
-            </div>
-          </div>
-          <div id="dia-domingo" class="dia-items" style="display:none">
-            <div class="ej-item" onclick="toggleEj('domingo',0)"><div class="ej-chk" id="ej-domingo-0"></div><span>Activación pre-partido</span></div>
-            <div class="ej-item" onclick="toggleEj('domingo',1)"><div class="ej-chk" id="ej-domingo-1"></div><span>Partido oficial</span></div>
-            <div class="ej-item" onclick="toggleEj('domingo',2)"><div class="ej-chk" id="ej-domingo-2"></div><span>Movilidad post-partido</span></div>
-          </div>
+        <div id="gym-objetivo" style="font-size:12px;color:var(--text2);text-align:center;margin-bottom:14px;padding:6px 12px;background:var(--surface2);border-radius:var(--r-sm);font-family:var(--mono);"></div>
+        <div id="gym-checklist"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;">
+          <span id="gym-progreso" style="font-size:11px;font-family:var(--mono);color:var(--purple);"></span>
+          <button onclick="markGymDia()" style="background:var(--purple-dim);border:1px solid rgba(124,77,255,0.25);color:var(--purple);border-radius:var(--r-sm);padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);">✓ Marcar asistencia</button>
         </div>
       </div>
 
@@ -795,86 +624,175 @@ async function saveTx(){const d=document.getElementById('txd').value.trim();cons
 async function delTx(id){await sb_del('finanzas',id);loadFinanzas();}
 function renderFinanzas(){const now=new Date();const mes=`${now.getFullYear()}-${now.getMonth()}`;const month=txs.filter(t=>t.mes===mes);const inc=month.filter(t=>t.tipo==='ingreso').reduce((s,t)=>s+t.monto,0);const gas=month.filter(t=>t.tipo==='gasto').reduce((s,t)=>s+t.monto,0);const bal=inc-gas;const fb=document.getElementById('fb');fb.textContent=`S/ ${bal.toFixed(0)}`;fb.style.color=bal>=0?'var(--green)':'var(--red)';document.getElementById('fi').textContent=`S/ ${inc.toFixed(0)}`;document.getElementById('fe').textContent=`S/ ${gas.toFixed(0)}`;document.getElementById('st-balance').textContent=`S/${bal.toFixed(0)}`;const el=document.getElementById('txl');if(!month.length){el.innerHTML='<div class="empty">sin movimientos este mes</div>';return;}el.innerHTML=month.map(t=>`<div class="tx"><div><div class="tx-d">${t.descripcion}</div><div class="tx-m">${t.categoria} · ${t.fecha}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="tx-a" style="color:${t.tipo==='ingreso'?'var(--green)':'var(--red)'}">${t.tipo==='ingreso'?'+':'-'}S/ ${t.monto.toFixed(0)}</div><button class="db" onclick="delTx(${t.id})">×</button></div></div>`).join('');}
 
-// ── CHECKLIST RUTINA ──
-const DIAS = {
-  lunes: 9, martes: 8, miercoles: 8, jueves: 9, viernes: 8, sabado: 8, domingo: 3
+// ── CHECKLIST RUTINA POR DÍA ──
+const RUTINA = {
+  1: { // Lunes
+    nombre: 'Lunes', objetivo: 'Fuerza + Core funcional',
+    ejercicios: [
+      'Press banca o mancuernas',
+      'Remo (barra/máquina)',
+      'Jalón (o dominadas asistidas)',
+      'Press hombro + Face pull',
+      'Tríceps: Extensión en polea – 3×10–12',
+      'Core: Pallof press dinámico – 3×10/lado',
+      'Dead bug avanzado – 3×8/lado',
+      '── Glúteo Medio & Lumbar ──',
+      'Good morning con barra – 3×10',
+      'Abducción de cadera en polea baja – 3×12/lado'
+    ]
+  },
+  2: { // Martes
+    nombre: 'Martes', objetivo: 'Movilidad + Postura',
+    ejercicios: [
+      '90/90 dinámico', 'Hip openers', 'Rotación + extensión torácica',
+      'Marcha de core caminando', 'Farmer carry unilateral',
+      '── Glúteo Medio & Lumbar ──',
+      'Clamshell con banda elástica – 2×15/lado',
+      'Extensión lumbar en suelo (Superman) – 2×12',
+      'Side-lying hip abduction – 2×15/lado'
+    ]
+  },
+  3: { // Miércoles
+    nombre: 'Miércoles', objetivo: 'Espalda + Core rotacional',
+    ejercicios: [
+      'Remo pesado – 4×6–8', 'Pullover o jalón – 3×10–12',
+      'Bíceps: Curl con barra – 3×8–10',
+      'Lanzamiento rotacional con balón (8 kg) – 3×6/lado',
+      'Woodchop alto→bajo con balón – 3×8/lado',
+      'Plancha lateral con abducción – 3×20–30s/lado',
+      '── Glúteo Medio & Lumbar ──',
+      'Hiperextensión en banco romano – 3×10–12',
+      'Monster walk lateral con banda – 3×12 pasos/lado'
+    ]
+  },
+  4: { // Jueves
+    nombre: 'Jueves', objetivo: 'Piernas + Glúteos (FUERTE)',
+    ejercicios: [
+      'Sentadilla goblet o frontal – 4×6–8', 'Split squat – 3×8/lado',
+      'RDL bilateral – 3×8', 'Single-leg RDL – 3×8/lado',
+      'Hip thrust explosivo – 4×6', 'Core anti-extensión – 3×6–8',
+      '── Glúteo Medio & Lumbar ──',
+      'Hip thrust unilateral con banda – 3×10/lado',
+      'Peso muerto sumo – 3×8',
+      'Lateral band walk en posición squat – 3×10 pasos/lado'
+    ]
+  },
+  5: { // Viernes
+    nombre: 'Viernes', objetivo: 'Movilidad + Recuperación',
+    ejercicios: [
+      'Psoas dinámico', 'Piriforme', 'Isquios dinámicos',
+      'Bird dog lento', 'Respiración diafragmática',
+      '── Glúteo Medio & Lumbar ──',
+      'QL stretch – 2×30s/lado',
+      'Foam roller lumbar y glúteos – 2 min/zona',
+      "Child's pose con apertura lateral – 2×30s/lado"
+    ]
+  },
+  6: { // Sábado
+    nombre: 'Sábado', objetivo: 'Activación + Potencia ligera',
+    ejercicios: [
+      'Puente de glúteos – 2×10', 'Monster walk – 2×10 pasos',
+      'Lanzamiento frontal con balón (8 kg) – 2×6',
+      'Rotación suave con balón – 2×6/lado', 'Skips A', 'Aceleraciones suaves',
+      '── Glúteo Medio & Lumbar ──',
+      'Clamshell con banda – 2×12/lado',
+      'Puente de glúteo unilateral – 2×8/lado'
+    ]
+  },
+  0: { // Domingo
+    nombre: 'Domingo', objetivo: 'Competencia',
+    ejercicios: ['Activación pre-partido', 'Partido oficial', 'Movilidad post-partido']
+  }
 };
 
-function getWeekKey() {
-  const now = new Date();
-  const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
-  const day = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - day);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const week = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-  return `semana_${d.getUTCFullYear()}_${week}`;
+let gymDiaOffset = 0;
+let gymDays = [];
+
+function getDiaDate(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d;
+}
+
+function getDiaKey(date) {
+  return date.toISOString().split('T')[0];
+}
+
+function cambiarDia(dir) {
+  gymDiaOffset += dir;
+  renderGymDia();
+}
+
+function renderGymDia() {
+  const date = getDiaDate(gymDiaOffset);
+  const dayOfWeek = date.getDay();
+  const rutina = RUTINA[dayOfWeek];
+  const key = getDiaKey(date);
+  const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+
+  document.getElementById('gym-dia-nombre').textContent = rutina.nombre;
+  document.getElementById('gym-dia-fecha').textContent = `${date.getDate()} de ${months[date.getMonth()]}`;
+  document.getElementById('gym-objetivo').textContent = rutina.objetivo;
+
+  const data = JSON.parse(localStorage.getItem('gym_check_' + key) || '{}');
+  const prevKey = getDiaKey(getDiaDate(gymDiaOffset - 7));
+  const prevData = JSON.parse(localStorage.getItem('gym_check_' + prevKey) || '{}');
+
+  const ejList = rutina.ejercicios;
+  let realIdx = 0;
+  let done = 0;
+  let total = 0;
+
+  let html = '';
+  ejList.forEach((ej, i) => {
+    if (ej.startsWith('──')) {
+      html += `<div class="ej-sep">${ej}</div>`;
+      return;
+    }
+    const isDone = data[realIdx];
+    const wasPending = prevData[realIdx] === false;
+    if (isDone) done++;
+    total++;
+    const pendingClass = (!isDone && wasPending) ? ' pending' : '';
+    const doneClass = isDone ? ' done' : '';
+    html += `<div class="ej-item${doneClass}${pendingClass}" onclick="toggleEjDia(${realIdx},'${key}')">
+      <div class="ej-chk${isDone?' done':''}${(!isDone&&wasPending)?' pending':''}"></div>
+      <span>${ej}${(!isDone&&wasPending)?'<span style="font-size:10px;color:var(--yellow);margin-left:6px;font-family:var(--mono);">pendiente</span>':''}</span>
+    </div>`;
+    realIdx++;
+  });
+
+  document.getElementById('gym-checklist').innerHTML = html;
+  document.getElementById('gym-progreso').textContent = `${done} / ${total} ejercicios`;
+}
+
+function toggleEjDia(idx, key) {
+  const data = JSON.parse(localStorage.getItem('gym_check_' + key) || '{}');
+  data[idx] = !data[idx];
+  localStorage.setItem('gym_check_' + key, JSON.stringify(data));
+  renderGymDia();
+}
+
+function markGymDia() {
+  const date = getDiaDate(gymDiaOffset);
+  const today = date.toISOString().split('T')[0];
+  if (!gymDays.includes(today)) {
+    gymDays.push(today);
+    save('gymDays');
+  }
+  renderGymDia();
 }
 
 function loadChecklist() {
-  const key = getWeekKey();
-  const data = JSON.parse(localStorage.getItem('checklist_' + key) || '{}');
-  const prevKey = getPrevWeekKey();
-  const prevData = JSON.parse(localStorage.getItem('checklist_' + prevKey) || '{}');
-
-  // Show week label
-  document.getElementById('semana-label').textContent = key.replace('semana_','').replace('_',' · sem ');
-
-  Object.keys(DIAS).forEach(dia => {
-    const count = DIAS[dia];
-    let done = 0;
-    for (let i = 0; i < count; i++) {
-      const isDone = data[dia] && data[dia][i];
-      const wasPending = prevData[dia] && prevData[dia][i] === false;
-      const el = document.getElementById(`ej-${dia}-${i}`);
-      const item = el?.parentElement;
-      if (!el) continue;
-      if (isDone) {
-        el.className = 'ej-chk done';
-        item.className = 'ej-item done';
-        done++;
-      } else if (wasPending) {
-        el.className = 'ej-chk pending';
-        item.className = 'ej-item pending';
-      } else {
-        el.className = 'ej-chk';
-        item.className = 'ej-item';
-      }
-    }
-    const prog = document.getElementById(`prog-${dia}`);
-    if (prog) prog.textContent = `${done}/${count}`;
-  });
+  gymDiaOffset = 0;
+  renderGymDia();
 }
 
-function getPrevWeekKey() {
-  const now = new Date();
-  now.setDate(now.getDate() - 7);
-  const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
-  const day = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - day);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const week = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-  return `semana_${d.getUTCFullYear()}_${week}`;
-}
-
-function toggleEj(dia, idx) {
-  const key = getWeekKey();
-  const data = JSON.parse(localStorage.getItem('checklist_' + key) || '{}');
-  if (!data[dia]) data[dia] = {};
-  data[dia][idx] = !data[dia][idx];
-  localStorage.setItem('checklist_' + key, JSON.stringify(data));
-  loadChecklist();
-}
-
-function toggleDia(dia) {
-  const el = document.getElementById('dia-' + dia);
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
-
-function resetChecklist() {
-  if (!confirm('¿Resetear el checklist de esta semana?')) return;
-  localStorage.removeItem('checklist_' + getWeekKey());
-  loadChecklist();
-}
+function resetChecklist() {}
+function toggleDia() {}
+function toggleEj() {}
+function getWeekKey() { return ''; }
+function getPrevWeekKey() { return ''; }
 
 // ── GYM FOTOS ──
 async function uploadRutinaFoto(input) {
@@ -933,15 +851,13 @@ async function deleteRutinaFoto(name) {
 
 // ── GYM ──
 let gymDays=[];
-async function loadGym(){const rows=await sb_get('gym_asistencia');gymDays=rows.map(r=>r.fecha);renderGym();}
-async function markGym(){const hoy=new Date().toISOString().split('T')[0];if(!gymDays.includes(hoy)){await sb_upsert('gym_asistencia',{fecha:hoy});gymDays.push(hoy);renderGym();}}
-function renderGym(){const grid=document.getElementById('dgrid');const today=new Date();const todayStr=today.toISOString().split('T')[0];const days=[];for(let i=27;i>=0;i--){const d=new Date(today);d.setDate(today.getDate()-i);days.push(d.toISOString().split('T')[0]);}const lbls=['D','L','M','X','J','V','S'];grid.innerHTML=days.map(d=>{const isT=d===todayStr;const isDone=gymDays.includes(d);return`<div class="dc ${isDone?'done':''} ${isT?'today':''}">${lbls[new Date(d+'T12:00:00').getDay()]}</div>`;}).join('');}
-
-let gymPlan=[];
-async function loadGymPlan(){gymPlan=await sb_get('gym_plan','order=orden.asc');renderGymPlan();}
-function addGymPlan(){const v=document.getElementById('gpi').value.trim();if(!v)return;sb_post('gym_plan',{texto:v,orden:gymPlan.length}).then(()=>loadGymPlan());document.getElementById('gpi').value='';}
-async function delGymPlan(id){await sb_del('gym_plan',id);loadGymPlan();}
-function renderGymPlan(){const el=document.getElementById('gplan');if(!gymPlan.length){el.innerHTML='<div class="empty">agrega tu plan semanal</div>';return;}el.innerHTML=gymPlan.map(p=>`<div class="mr"><span style="font-size:13px">${p.texto}</span><button class="db" onclick="delGymPlan(${p.id})">×</button></div>`).join('');}
+async function loadGym(){const rows=await sb_get('gym_asistencia');gymDays=rows.map(r=>r.fecha);}
+async function markGym(){}
+function renderGym(){}
+async function loadGymPlan(){}
+function addGymPlan(){}
+function delGymPlan(){}
+function renderGymPlan(){}
 
 let meals=[];
 async function loadMeals(){meals=await sb_get('alimentacion');renderMeals();}
