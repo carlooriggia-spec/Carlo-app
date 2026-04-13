@@ -358,6 +358,15 @@ select option { background: var(--surface); }
         <button class="ab" style="width:100%;border-radius:var(--r-sm);font-size:13px;font-weight:700;height:40px;" onclick="markGym()">✓ marcar hoy</button>
       </div>
       <div class="card">
+        <div class="card-h"><span class="card-t">mi rutina</span><span class="chip chip-purple">FOTOS</span></div>
+        <div id="rutina-fotos" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;"></div>
+        <label style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--purple-dim);border:1px dashed rgba(124,77,255,0.3);border-radius:var(--r-sm);padding:12px;cursor:pointer;font-size:13px;font-weight:600;color:var(--purple);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Subir foto de rutina
+          <input type="file" accept="image/*" onchange="uploadRutinaFoto(this)" style="display:none" />
+        </label>
+        <div id="upload-status" style="font-size:11px;color:var(--text2);text-align:center;margin-top:8px;font-family:var(--mono);"></div>
+      </div>
         <div class="card-h"><span class="card-t">plan semanal</span></div>
         <div id="gplan"></div>
         <div class="ir" style="margin-top:10px"><input type="text" id="gpi" placeholder="Ej: Lunes — Piernas + Core" /><button class="ab" onclick="addGymPlan()">+</button></div>
@@ -459,7 +468,7 @@ async function init() {
     notaTimer=setTimeout(()=>{sb_upsert('nota_dia',{fecha:hoy,contenido:e.target.value,updated_at:new Date().toISOString()});},800);
   });
 
-  await Promise.all([loadTareas(),loadCompras(),loadRecordatorios(),loadAlumnos(),loadOps(),loadGrupales(),loadProcesos(),loadProductos(),loadPedidos(),loadVentas(),loadFinanzas(),loadGym(),loadGymPlan(),loadMeals()]);
+  await Promise.all([loadTareas(),loadCompras(),loadRecordatorios(),loadAlumnos(),loadOps(),loadGrupales(),loadProcesos(),loadProductos(),loadPedidos(),loadVentas(),loadFinanzas(),loadGym(),loadGymPlan(),loadMeals(),loadRutinaFotos()]);
   updateStats();
   document.getElementById('loader').style.display='none';
 }
@@ -572,6 +581,61 @@ async function loadFinanzas(){txs=await sb_get('finanzas');renderFinanzas();}
 async function saveTx(){const d=document.getElementById('txd').value.trim();const a=parseFloat(document.getElementById('txa').value);if(!d||!a)return;const now=new Date();const mes=`${now.getFullYear()}-${now.getMonth()}`;await sb_post('finanzas',{tipo:document.getElementById('txtp').value,descripcion:d,categoria:document.getElementById('txc').value,monto:a,mes,fecha:now.toLocaleDateString('es-PE',{day:'2-digit',month:'short'})});['txd','txa'].forEach(x=>document.getElementById(x).value='');closeM('m-tx');loadFinanzas();}
 async function delTx(id){await sb_del('finanzas',id);loadFinanzas();}
 function renderFinanzas(){const now=new Date();const mes=`${now.getFullYear()}-${now.getMonth()}`;const month=txs.filter(t=>t.mes===mes);const inc=month.filter(t=>t.tipo==='ingreso').reduce((s,t)=>s+t.monto,0);const gas=month.filter(t=>t.tipo==='gasto').reduce((s,t)=>s+t.monto,0);const bal=inc-gas;const fb=document.getElementById('fb');fb.textContent=`S/ ${bal.toFixed(0)}`;fb.style.color=bal>=0?'var(--green)':'var(--red)';document.getElementById('fi').textContent=`S/ ${inc.toFixed(0)}`;document.getElementById('fe').textContent=`S/ ${gas.toFixed(0)}`;document.getElementById('st-balance').textContent=`S/${bal.toFixed(0)}`;const el=document.getElementById('txl');if(!month.length){el.innerHTML='<div class="empty">sin movimientos este mes</div>';return;}el.innerHTML=month.map(t=>`<div class="tx"><div><div class="tx-d">${t.descripcion}</div><div class="tx-m">${t.categoria} · ${t.fecha}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="tx-a" style="color:${t.tipo==='ingreso'?'var(--green)':'var(--red)'}">${t.tipo==='ingreso'?'+':'-'}S/ ${t.monto.toFixed(0)}</div><button class="db" onclick="delTx(${t.id})">×</button></div></div>`).join('');}
+
+// ── GYM FOTOS ──
+async function uploadRutinaFoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const status = document.getElementById('upload-status');
+  status.textContent = 'Subiendo...';
+  try {
+    const ext = file.name.split('.').pop();
+    const fileName = `rutina_${Date.now()}.${ext}`;
+    const res = await fetch(`${SB}/storage/v1/object/Gym-fotos/${fileName}`, {
+      method: 'POST',
+      headers: { 'apikey': SK, 'Authorization': 'Bearer ' + SK, 'Content-Type': file.type },
+      body: file
+    });
+    if (res.ok) {
+      status.textContent = '✓ Foto subida';
+      setTimeout(() => status.textContent = '', 2000);
+      loadRutinaFotos();
+    } else {
+      status.textContent = 'Error al subir';
+    }
+  } catch { status.textContent = 'Error de conexión'; }
+  input.value = '';
+}
+
+async function loadRutinaFotos() {
+  try {
+    const res = await fetch(`${SB}/storage/v1/object/list/Gym-fotos`, {
+      method: 'POST',
+      headers: { ...H, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prefix: '', limit: 20, sortBy: { column: 'created_at', order: 'desc' } })
+    });
+    const files = await res.json();
+    const el = document.getElementById('rutina-fotos');
+    if (!files || !files.length) { el.innerHTML = ''; return; }
+    el.innerHTML = files.map(f => {
+      const url = `${SB}/storage/v1/object/public/Gym-fotos/${f.name}`;
+      return `<div style="position:relative;border-radius:var(--r-sm);overflow:hidden;aspect-ratio:1;">
+        <img src="${url}" style="width:100%;height:100%;object-fit:cover;" />
+        <button onclick="deleteRutinaFoto('${f.name}')" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.6);border:none;color:white;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
+      </div>`;
+    }).join('');
+  } catch { }
+}
+
+async function deleteRutinaFoto(name) {
+  try {
+    await fetch(`${SB}/storage/v1/object/Gym-fotos/${name}`, {
+      method: 'DELETE',
+      headers: { 'apikey': SK, 'Authorization': 'Bearer ' + SK }
+    });
+    loadRutinaFotos();
+  } catch { }
+}
 
 // ── GYM ──
 let gymDays=[];
